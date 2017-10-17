@@ -30,6 +30,30 @@ var config = {
 
 let services = new Services(Configs);
 
+//simple useage with react native app. the return value is a promise for all functions
+
+    services.test().then((responseJson) => {
+
+      if (responseJson) {
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+        }, function () {
+          // do something with new state
+        });
+      } else {
+        this.setState({
+          isLoading: true
+        }, function () {
+          // do something with new state
+        });
+      }
+
+    })
+      .catch((error) => {
+        console.error(error);
+      });
+
 ```
 
 
