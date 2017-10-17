@@ -1,0 +1,15 @@
+{
+  "name": "binancesdk",
+  "version": "0.2.2",
+  "description": "binance.com sdk",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Abdulhamid Alattar",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "validator": "^9.0.0"
+  }
+}
