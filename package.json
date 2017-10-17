@@ -3,6 +3,10 @@
   "version": "0.2.2",
   "description": "binance.com sdk",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdulhamid-alattar/binancesdk.git"
+  },
   "scripts": {
     "test": "test"
   },
