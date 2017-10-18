@@ -1,7 +1,8 @@
 import Enums from './Enums';
 import Methods from './Methods';
 import Validator from './MethodValidator';
-var CryptoJS = require("crypto-js");
+const WebSocket = require("ws");
+const CryptoJS = require("crypto-js");
 
 export default class Services {
 

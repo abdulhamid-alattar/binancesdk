@@ -1,23 +1,24 @@
 
 
-## Binance SDK
+## Binance SDK - React-Native
 
-**This library is wrapping the binance.com API.**
+**This library is wrapping the binance.com API. Made to be compatible with react-native**
 
 
 
 ## Installation and Usage
 
-### Server-side usage
+### usage
 
 Install the library with 
 ```js
 npm install binancesdk
 ```
 
-### Configs
+### Configs and Example
 
-pass the config opject to the constructor 
+pass the config object to the constructor.
+this example is on react native.
 
 ```js
 import Services from 'binancesdk';
