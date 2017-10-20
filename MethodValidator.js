@@ -81,7 +81,7 @@ module.exports = function (args, parameters) {
     });
 
     if(!isValid) {
-        console.error(errorMessage);
+        throw new TypeError(errorMessage);
     }
     return isValid;
 };
