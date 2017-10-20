@@ -454,7 +454,7 @@ export default class Services {
      * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
      * @public
      */
-    accountTradeList(args) {
+    accountTradeList(symbol,fromId,limit,recvWindow) {
         if (typeof limit === 'undefined') {
             limit = 500; //default value
         } else if (limit > 500) {
