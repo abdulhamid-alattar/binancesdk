@@ -97,6 +97,9 @@ export default class Services {
         * @private
         */
     _methodCall(method, args) {
+        if(typeof args === 'undefined'){
+            args = {};
+        }
         if (Validator(args, method.parameters)) {
             return fetch(
                 this._constructEndPoint(args, method),
