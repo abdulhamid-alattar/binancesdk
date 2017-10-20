@@ -1,7 +1,7 @@
 {
-  "name": "binancesdk",
+  "name": "binance-react",
   "version": "0.2.4",
-  "description": "binance.com sdk",
+  "description": "binance.com using promises, compatible with react",
   "main": "index.js",
   "repository": {
     "type": "git",
