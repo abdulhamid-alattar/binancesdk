@@ -1,6 +1,6 @@
 {
   "name": "binancesdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "binance.com using promises, compatible with react",
   "main": "index.js",
   "repository": {
