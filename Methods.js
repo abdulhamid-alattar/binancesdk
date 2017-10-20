@@ -333,6 +333,31 @@ const Methods = {
         },
         desciption: 'Cancel an active order.' 
     },
+    'open_orders': { 
+        name: 'openOrders', 
+        version: 'v3', 
+        verb: 'GET', 
+        signed: true, 
+        apikey: true,
+        parameters: {
+            symbol: {
+                isMandatory: true,
+                type: 'LONG',
+                desciption: null
+            },
+            recvWindow: {
+                isMandatory: false,
+                type: 'LONG',
+                desciption: null
+            },
+            timestamp: {
+                isMandatory: true,
+                type: 'LONG',
+                desciption: null
+            }
+        },
+        desciption: 'Get all open orders on a symbol.' 
+    },
     'all_orders': { 
         name: 'allOrders', 
         version: 'v3', 
