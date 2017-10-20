@@ -21,6 +21,9 @@ module.exports = function (args, parameters) {
 
     let errorMessage = '';
     let isValid = true;
+    if (typeof args === 'undefined') {
+        args = {};
+    }
     Object.keys(args).forEach(function (key) {
         const val = args[key];
         const parameterOptions = parameters[key];
