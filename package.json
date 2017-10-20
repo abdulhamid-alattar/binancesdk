@@ -1,5 +1,5 @@
 {
-  "name": "binance-react",
+  "name": "binancesdk",
   "version": "0.3.0",
   "description": "binance.com using promises, compatible with react",
   "main": "index.js",
