@@ -487,6 +487,55 @@ const Methods = {
         },
         desciption: 'Close out a user data stream.' 
     },
+    'ws_depth': {
+        name: '@depth',
+        parameters: {
+            symbol: {
+                isMandatory: true,
+                type: 'STRING',
+                desciption: null
+            }
+        },
+        desciption: 'Websocket for depth' 
+    },
+    'ws_kline': {
+        name: '@kline_',
+        parameters: {
+            symbol: {
+                isMandatory: true,
+                type: 'STRING',
+                desciption: null
+            },
+            interval: {
+                isMandatory: true,
+                type: 'ENUM',
+                desciption: null
+            }
+        },
+        desciption: null
+    },
+    'ws_agg_trade': {
+        name: 'aggTrade',
+        parameters: {
+            symbol: {
+                isMandatory: true,
+                type: 'STRING',
+                desciption: null
+            },
+        },
+        desciption: null
+    },
+    'ws_user_data': {
+        name: '',
+        parameters: {
+            listenKey: {
+                isMandatory: true,
+                type: 'STRING',
+                desciption: null
+            }
+        },
+        desciption: null
+    },
 };
 
 

@@ -1,7 +1,6 @@
 import Enums from './Enums';
 import Methods from './Methods';
 import Validator from './MethodValidator';
-//const WebSocket = require("ws");
 const CryptoJS = require("crypto-js");
 
 export default class Services {
@@ -14,6 +13,9 @@ export default class Services {
         this._configs = configs;
         if (!this._configs.endPointUrl) {
             this._configs.endPointUrl = 'https://www.binance.com/api/';
+        }
+        if (!this._configs.wsEndPointUrl) {
+            this._configs.wsEndPointUrl = 'wss://stream.binance.com:9443/ws/';
         }
 
     }
@@ -97,7 +99,7 @@ export default class Services {
         * @private
         */
     _methodCall(method, args) {
-        if(typeof args === 'undefined'){
+        if (typeof args === 'undefined') {
             args = {};
         }
         if (Validator(args, method.parameters)) {
@@ -457,7 +459,7 @@ export default class Services {
      * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
      * @public
      */
-    accountTradeList(symbol,fromId,limit,recvWindow) {
+    accountTradeList(symbol, fromId, limit, recvWindow) {
         if (typeof limit === 'undefined') {
             limit = 500; //default value
         } else if (limit > 500) {
@@ -506,5 +508,63 @@ export default class Services {
     }
 
     //TODO: Websocket APIs
+
+    _createWebsocket(endpoint) {
+        return new Promise(function (resolve, reject) {
+            var ws = new WebSocket(this._configs.wsEndPointUrl + endpoint);
+            ws.onmessage = (e) => {
+                resolve(JSON.parse(e.data));
+            };
+            ws.onerror = (e) => {
+                // an error occurred
+                reject(e.message);
+            };
+        });
+
+    }
+    /**
+     * Opens depth websocket.
+     * 
+     * @param {String} symbol (Required) The currency pair symbol ex. LTCBTC.
+     * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
+     * @public
+     */
+    depthWebsocket(symbol) {
+        return this._createWebsocket(symbol + Methods.ws_depth.name);
+    }
+    /**
+      * Opens kline websocket.
+      * 
+      * @param {String} symbol (Required) The currency pair symbol ex. LTCBTC.
+      * @param {Enum} interval
+      * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
+      * @public
+      */
+    klineWebsocket(symbol, interval) {
+        return this._createWebsocket(symbol + Methods.ws_kline.name + interval);
+    }
+
+    /**
+      * Opens trades websocket.
+      * 
+      * @param {String} symbol (Required) The currency pair symbol ex. LTCBTC.
+      * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
+      * @public
+      */
+    tradesWebsocket(symbol) {
+        return this._createWebsocket(symbol + Methods.ws_agg_trade.name);
+
+    }
+
+    /**
+      * Opens User Data  websocket.
+      * 
+      * @param {String} listenKey (Required) The currency pair symbol ex. LTCBTC.
+      * @returns {Promise<ResponseJson>} Array of objects [{...},{...},{...}...] if its success
+      * @public
+      */
+    userDataWebsocket(listenKey) {
+        return this._createWebsocket(listenKey);
+    }
     //TODO: Caching
 }
