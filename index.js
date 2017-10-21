@@ -512,6 +512,9 @@ export default class Services {
     _createWebsocket(endpoint) {
         return new Promise(function (resolve, reject) {
             var ws = new WebSocket(this._configs.wsEndPointUrl + endpoint);
+            ws.onopen = (e) => {
+                console.log('Socket opened')
+            };
             ws.onmessage = (e) => {
                 resolve(JSON.parse(e.data));
             };
