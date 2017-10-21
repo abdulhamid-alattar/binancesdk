@@ -510,8 +510,8 @@ export default class Services {
     //TODO: Websocket APIs
 
     _createWebsocket(endpoint) {
-        return new Promise(function (resolve, reject) {
-            var ws = new WebSocket(this._configs.wsEndPointUrl + endpoint);
+        return new Promise((resolve, reject) =>{
+            let ws = new WebSocket(this._configs.wsEndPointUrl + endpoint);
             ws.onopen = (e) => {
                 console.log('Socket opened')
             };
