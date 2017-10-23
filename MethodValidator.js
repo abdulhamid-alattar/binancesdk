@@ -1,24 +1,25 @@
 import validator from 'validator';
 import Enums from './Enums';
 
-const isString = function (stringValue) {
-    return typeof stringValue === 'string';
-}
-const validateEnum = function (obj) {
-    let isValid = false;
-    Object.keys(Enums).forEach(function (key) {
-        if((Enums[key])[obj]){
-            isValid = true;
-            return;
-        }
-        
-    });
 
-    return isValid;
-}
 
-module.exports = function (args, parameters) {
+export default function (args, parameters) {
 
+    const isString = function (stringValue) {
+        return typeof stringValue === 'string';
+    }
+    const validateEnum = function (obj) {
+        let isValid = false;
+        Object.keys(Enums).forEach(function (key) {
+            if ((Enums[key])[obj]) {
+                isValid = true;
+                return;
+            }
+
+        });
+
+        return isValid;
+    }
     let errorMessage = '';
     let isValid = true;
     if (typeof args === 'undefined') {
@@ -27,7 +28,7 @@ module.exports = function (args, parameters) {
     Object.keys(args).forEach(function (key) {
         const val = args[key];
         const parameterOptions = parameters[key];
-        
+
 
         if (parameterOptions) {
             if (parameterOptions.isMandatory && !val) {
@@ -69,7 +70,7 @@ module.exports = function (args, parameters) {
 
             if (parameterOptions.type && parameterOptions.type === 'INT' || parameterOptions.type === 'LONG') {
 
-                if (!validator.isInt(val+'')) {
+                if (!validator.isInt(val + '')) {
                     isValid = false;
                     errorMessage = 'Value is not int:' + key + '/' + val;
                     return;
@@ -80,7 +81,7 @@ module.exports = function (args, parameters) {
 
     });
 
-    if(!isValid) {
+    if (!isValid) {
         throw new TypeError(errorMessage);
     }
     return isValid;

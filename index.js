@@ -2,6 +2,7 @@ import Enums from './Enums';
 import Methods from './Methods';
 import Validator from './MethodValidator';
 const CryptoJS = require("crypto-js");
+const axios = require("axios");
 
 export default class Services {
 
@@ -20,6 +21,14 @@ export default class Services {
 
     }
 
+    _isEmpty(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     /**
      * constructs the query string with signature
      *
@@ -28,36 +37,17 @@ export default class Services {
      * @returns {String} String represrents the querystring with signature
      * @private
      */
-    _constructPayload(args, method) {
+    _signature(args) {
         let payload = '';
 
         Object.keys(args).forEach(function (key) {
             payload += key + '=' + args[key] + '&';
         });
+        return CryptoJS.HmacSHA256(payload.replace(/\&$/, ''), this._configs.secretKey);
 
-        if (method.signed) {
-            payload += 'signature=' + CryptoJS.HmacSHA256(payload.replace(/\&$/, ''), this._configs.secretKey);
-        }
-
-        return '?' + payload;
     }
 
-    /**
-     * Concatinate the endpoint API with version number and method name
-     *
-     * @param {Object} args Arguments
-     * @param {Method} method 
-     * @returns {String} String represrents the URL for the API call
-     * @private
-     */
-    _constructEndPoint(args, method) {
 
-        let url = this._configs.endPointUrl + method.version + '/' + method.name;
-        if (method.verb === 'GET') {
-            url += this._constructPayload(args, method);
-        }
-        return url;
-    }
 
     /**
      * Creates the rest call object
@@ -67,9 +57,9 @@ export default class Services {
      * @returns {Object}  Object represrents Rest call headers and url
      * @private
      */
-    _constructRestCall(args, method) {
+    _constructRequest(args, method) {
 
-        var reqHeaders = {}
+        let reqHeaders = {};
 
         if (method.apikey) {
             reqHeaders["X-MBX-APIKEY"] = this._configs.APIKey;
@@ -77,16 +67,21 @@ export default class Services {
 
         let restObj = {
             method: method.verb,
-            headers: reqHeaders
+            headers: reqHeaders,
+            url: this._configs.endPointUrl + method.version + '/' + method.name
         };
 
-
-        if (method.verb === 'POST' || method.verb === 'PUT' || method.verb === 'DELETE') {
-            restObj.body = JSON.stringify(this._constructPayload(args, method));
+        if (!this._isEmpty(args)) {
+            restObj.data = args;
         }
 
-        return restObj;
+        if (method.signed) {
+            if (typeof restObj.data === 'undefined') restObj.data = {};
+            restObj.data['signature'] = this.signature(args);
+        }
 
+
+        return restObj;
 
     }
 
@@ -103,12 +98,13 @@ export default class Services {
             args = {};
         }
         if (Validator(args, method.parameters)) {
-            return fetch(
-                this._constructEndPoint(args, method),
-                this._constructRestCall(args, method)
-            ).then((response) => response.json())
+            //console.log(this._constructEndPoint(args, method))
+            
+            return axios(this._constructRequest(args, method))
+             //   .then((response) => response.json())
                 .then((responseJson) => {
-                    return responseJson;
+                   // console.log(responseJson)
+                    return responseJson.data;
 
                 })
                 .catch((error) => {
@@ -510,7 +506,7 @@ export default class Services {
     //TODO: Websocket APIs
 
     _createWebsocket(endpoint) {
-        return new Promise((resolve, reject) =>{
+        return new Promise((resolve, reject) => {
             let ws = new WebSocket(this._configs.wsEndPointUrl + endpoint);
             ws.onopen = (e) => {
                 console.log('Socket opened')
